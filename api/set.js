@@ -1,11 +1,17 @@
-let codigo = ""
+let cache = ""
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const body = await req.json()
-    codigo = body.codigo || ""
-    res.status(200).json({ status: "ok" })
+    try {
+      const body = await req.json()
+      cache = body.codigo || ""
+      res.status(200).json({ status: "ok" })
+    } catch (err) {
+      res.status(500).json({ error: "Erro no JSON" })
+    }
   } else {
     res.status(405).send("Método não permitido")
   }
 }
+
+export const config = { api: { bodyParser: false } }
